@@ -1,5 +1,4 @@
 import express from "express";
-import Sequelize from "sequelize";
 
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -24,7 +23,7 @@ async function initializeApp() {
   });
 }
 
-app.use("/v1", productRoutes);
 app.use("/v1", userRoutes);
+app.use("/v1", productRoutes);
 
 initializeApp();

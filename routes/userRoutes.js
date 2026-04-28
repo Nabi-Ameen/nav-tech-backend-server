@@ -8,9 +8,10 @@ import {
 } from "../controllers/userController.js";
 const route = express.Router();
 
-route.get("/users", getUsers);
-route.get("/user/:id", getSigleUsers);
 route.post("/user", creatUser);
+route.get("/users", getUsers);
+
+route.get("/user/:id", getSigleUsers);
 route.put("/user/:id", updateUser);
 route.delete("/user/:id", destroyUser);
 

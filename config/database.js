@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 // Create Sequelize instance
-const sequelize = new Sequelize("navtech-db", "root", "", {
+const database = new Sequelize("navtech-db", "root", "", {
   host: "localhost",
   dialect: "mysql",
   logging: false,
@@ -9,10 +9,10 @@ const sequelize = new Sequelize("navtech-db", "root", "", {
 
 const connectDB = async (force = false) => {
   try {
-    await sequelize.authenticate();
+    await database.authenticate();
     console.log("Connection has been established successfully.");
 
-    await sequelize.sync({ force: force });
+    await database.sync({ force: force });
 
     if (force) {
       console.log("Database synced with force: true - All tables recreated");
@@ -27,4 +27,4 @@ const connectDB = async (force = false) => {
   }
 };
 
-export { sequelize, connectDB };
+export { database, connectDB };
