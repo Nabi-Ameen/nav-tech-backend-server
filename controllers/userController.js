@@ -1,14 +1,38 @@
 import { products } from "../constant.js";
 import User from "../models/userModel.js";
+import bcrypt from "bcrypt";
 
 export const creatUser = async (req, res) => {
   const body = req.body;
   try {
-    const user = await User.create(body);
+    const isExistUser = await User.findOne({ where: { email: body.email } });
+
+    if (isExistUser) {
+      return res.json({
+        status: false,
+        message: `This ${body.email} already exist `,
+      });
+    }
+
+    const hashPassword = await bcrypt.hash(body.password, 10);
+    const user = await User.create({ ...body, password: hashPassword });
+    const hygienePasswor = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      updatedAt: user.updatedAt,
+      createdAt: user.createdAt,
+    };
+
+    // const userData = user.toJSON();
+    // delete userData.password;
+
     res.status(201).json({
       success: true,
       message: "user created successfully",
-      data: user,
+      data: hygienePasswor,
     });
   } catch (error) {
     res.status(500).json({
