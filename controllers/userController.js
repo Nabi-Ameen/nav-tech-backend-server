@@ -15,7 +15,11 @@ export const creatUser = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(body.password, 10);
-    const user = await User.create({ ...body, password: hashPassword });
+    const user = await User.create({
+      ...body,
+      role: "user",
+      password: hashPassword,
+    });
     const hygienePasswor = {
       id: user.id,
       firstName: user.firstName,
