@@ -49,10 +49,21 @@ export const creatUser = async (req, res) => {
 export const getUsers = async (req, res) => {
   try {
     const allUsers = await User.findAll();
+
+    const excludePassword = allUsers.map((user) => ({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      updatedAt: user.updatedAt,
+      createdAt: user.createdAt,
+    }));
+
     res.status(200).json({
       success: true,
       message: "Retreive all users successfully",
-      data: allUsers,
+      data: excludePassword,
     });
   } catch (error) {
     res.status(500).json({
