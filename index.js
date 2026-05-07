@@ -2,6 +2,7 @@ import express from "express";
 
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 import { connectDB } from "./config/database.js";
 import cors from "cors";
 
@@ -26,4 +27,5 @@ async function initializeApp() {
 
 app.use("/v1", userRoutes);
 app.use("/v1", productRoutes);
+app.use("/v1", categoryRoutes);
 initializeApp();
