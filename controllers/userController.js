@@ -1,6 +1,71 @@
 import { products } from "../constant.js";
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        status: false,
+        message: "Email is required",
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        status: false,
+        message: "Password is required",
+      });
+    }
+
+    const user = await User.findOne({ where: { email: email } });
+
+    if (!user) {
+      return res.status(400).json({
+        status: false,
+        message: `User not register with this email:${email}`,
+      });
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+      res.json({
+        status: false,
+        message: `Password is incorrect`,
+      });
+    }
+
+    const excludePassword = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+    };
+
+    const token = await jwt.sign(
+      excludePassword,
+      "e9qV3fnYNfBA•••••••••••••••••••pQswM1SpBsJD",
+      { expiresIn: "2d" },
+    );
+
+    res.json({
+      status: true,
+      message: "Login successfully",
+      data: excludePassword,
+      token: token,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "internal server error",
+      error: error.message,
+    });
+  }
+};
 
 export const creatUser = async (req, res) => {
   const body = req.body;
