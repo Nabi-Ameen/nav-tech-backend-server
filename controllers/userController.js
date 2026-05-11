@@ -1,3 +1,4 @@
+import { generateToken } from "../auth/authentication.js";
 import { products } from "../constant.js";
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
@@ -47,11 +48,13 @@ export const loginUser = async (req, res) => {
       role: user.role,
     };
 
-    const token = await jwt.sign(
-      excludePassword,
-      "e9qV3fnYNfBA•••••••••••••••••••pQswM1SpBsJD",
-      { expiresIn: "2d" },
-    );
+    const token = generateToken(user);
+
+    // const token = await jwt.sign(
+    //   excludePassword,
+    //   "e9qV3fnYNfBA•••••••••••••••••••pQswM1SpBsJD",
+    //   { expiresIn: "2d" },
+    // );
 
     res.json({
       status: true,
@@ -112,6 +115,7 @@ export const creatUser = async (req, res) => {
 };
 
 export const getUsers = async (req, res) => {
+  console.log("user", req.user);
   try {
     const allUsers = await User.findAll();
 
