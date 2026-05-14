@@ -72,7 +72,14 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { productName, title, price, description } = req.body;
+    const {
+      productName,
+      price,
+      availibity,
+      category,
+      freeShipping,
+      description,
+    } = req.body;
 
     const product = await Product.findByPk(id);
     if (!product) {
@@ -81,8 +88,10 @@ export const updateProduct = async (req, res) => {
 
     const updateData = {
       productName: productName || product.productName,
-      title: title || product.title,
       price: price || product.price,
+      availibity: availibity || product.availibity,
+      category: category || product.category,
+      freeShipping: freeShipping || product.freeShipping,
       description: description || product.description,
     };
 
